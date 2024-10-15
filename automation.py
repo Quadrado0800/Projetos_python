@@ -16,8 +16,6 @@ click(UHs)
 print(UHs)
 sleep(0.7)
 
-
- 
 extrato_conta = buscar('projetoautomacao_pngs_\\lancamento_IMGS\\extrato_conta.png')
 click(extrato_conta)
 
@@ -43,6 +41,7 @@ def lancamento_efetivo():
     if "consumação" == PDV():
         print("hello world, its working!")
 
+ # a = b
 
 
     sleep(0.7)
