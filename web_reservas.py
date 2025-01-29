@@ -6,8 +6,6 @@ from time import sleep
 import customtkinter as ct
 from customtkinter import CTk
 import threading
-import os
-from impri import facs
 import win32api
 import win32print
 # Configura o navegador abrir com a opções desejadas
@@ -21,28 +19,6 @@ def abrir_chrome_selenium():
     # Abre o link na guia selecionada do selenium
     driver.maximize_window()
     driver.get('https://desbravadorweb.com.br/acesso/6510')
-    # TEMP //
-    sleep(1)
-    driver.find_element(By.XPATH,"//input[@id=':r0:']").clear()
-    driver.find_element(By.XPATH,"//input[@id=':r0:']").send_keys("isaacjoaofreitas@gmail.com")
-    # localizando e preenchendo campo senha
-    driver.find_element(By.XPATH,"//input[@id=':r1:']").clear()
-    driver.find_element(By.XPATH,"//input[@id=':r1:']").send_keys("Batata0800")
-    sleep(1)
-    # botão "login"
-    button_login = driver.find_element(By.XPATH,"//button[@type='submit']")
-    button_login.click()
-    sleep(0.8)
-    try:
-        button_login.click()
-        sleep(6)
-    except:
-        print("dont need the second click.")
-    sleep(0.8)
-    driver.get("https://desbravadorweb.com.br/#/mapaUh/")
-
-
-
 # Coleta links de todos as confirmações de check-ins, e solicita a impressora
 def reservas_dia_coiso():
     driver.get("https://desbravadorweb.com.br/#/reserva/")
@@ -51,8 +27,6 @@ def reservas_dia_coiso():
     driver.find_element(By.XPATH,"//*[@id='grid']/div[1]/div/div[2]/div/label").click()
     sleep(1)
     reservas_lista_coiso()
-            
-
 # Coleta links de todos as confirmações de check-ins, e solicita a impressora
 def reservas_lista_coiso():
     # busca todos os botões para emitir confirmações a partir da pagina "Painel-reservas"
@@ -76,7 +50,6 @@ def reservas_lista_coiso():
         else:
             cancel_inf = i.get_attribute('href')
             print("Its not what you want (confirmation canceled) N = " + cancel_inf)
-
     driver.implicitly_wait(0.8)
     sleep(0.8)
     # click links that are stored in 'i_loc' (all the check-in that are needed, or all on the page...)
@@ -124,22 +97,12 @@ def reservas_lista_coiso():
         try:
             for n in nums:
                 print(n)
-                #inf_path = "C:\\Users\\PC\\Documents\\ISAAC_DOC\\python_testes\\python_on_VS\\Projeto02-criacao de inf\\inf" + n + "- OLD -.docx"
-                #sleep(0.7)
-                #ficha_path = "C:\\Users\\PC\\Documents\\ISAAC_DOC\\python_testes\\python_on_VS\\projeto03\\Ficha-Hospedes.docx"
-                #sleep(0.7)
-                
-                win32api.ShellExecute(0, "print", "C:\\Users\\PC\\Documents\\ISAAC_DOC\\python_testes\\python_on_VS\\Projeto02-criacao de inf\\inf" + n + "- OLD -.docx", None, ".", 0)
-                #facs.impressoes(ficha_path) # iniciando impressão diretamente para impressora (mais rapido)
-                #os.startfile(ficha_path, 'print')
+                win32api.ShellExecute(0, "print", "C:\\Users\\PC\\Documents\\ISAAC_DOC\\python_testes\\python_on_VS\\Projeto02-criacao de inf\\inf" + n + "- OLD -.docx", None, ".", 0
                 print("starting ficha File...")
                 sleep(6)
                 win32api.ShellExecute(0, "print", "C:\\Users\\PC\\Documents\\ISAAC_DOC\\python_testes\\python_on_VS\\projeto03\\Ficha-Hospedes.docx", None, ".", 0)
-                #facs.impressoes(inf_path) # iniciando impressão diretamente para impressora (mais rapido)
-                #os.startfile(inf_path, 'print')
                 print("starting inf File...")
                 sleep(6) 
-                
                 driver.execute_script(f'window.print();') # iniciando impressão da pagina aberta no chrome
                 sleep(8)
             print("Inf, confirm and Ficha done!")
@@ -147,7 +110,6 @@ def reservas_lista_coiso():
         except:
             print("//////////////////  Cant print files from checkin!!!  ////////////////////////")
             nums = []
-        #facs.impressoes()
         # Fecha a nova guia (que foi anteriormente selecionada)
         driver.close()
         sleep(1)
@@ -205,7 +167,6 @@ def conferencia_UHS():
             z = b[1]
             print(z)
             UHS.append(z)
-
     except:
         print("dont have checkouts-checkins in this list!")
     for itemm in UHS:
@@ -222,8 +183,6 @@ def conferencia_UHS():
             sleep(2)
             sleep(34)
             item_on_room = driver.find_elements(By.XPATH, "//div[@class='well-sm row extrato-div-comandas extrato-div-lancamento-comandas']")
-        #item_on_room = driver.find_elements(By.XPATH, "//*[@style='display: block;']")
-
         # para cada item esperar o tempo de 16 segundos ou coisa do tipo // for comanda in room wait X amount of time 
         for iten in item_on_room:
             sleep(16)
@@ -236,7 +195,6 @@ def conferencia_UHS_checkouts():
     UHS: list = []
     uhs_checkouts = driver.find_elements(By.XPATH, "//*[@class='btn btn-popover-grande OCUPADA_CHECKOUT no-padding']")
     uhs_checkin_checkout = driver.find_elements(By.XPATH, "//*[@class='btn btn-popover-grande OCUPADA_CHECKIN_CHECKOUT no-padding']")
-
     sleep(2)
     #  cria um loop, e passa por todos os uhs ocupados_checkout, para conferencia de checkouts
     for i in uhs_checkin_checkout:
@@ -308,14 +266,8 @@ def janela_customtkinter():
     #adiciona um botão e atribui a função "dalista" a ele
     button_confirms_lista = ct.CTkButton(app, text="imprimir da lista", command=dalista)
     button_confirms_lista.pack(padx=20, pady=20)
-    #check box para demais atividades:
-    global fichas
-    fichas = ct.BooleanVar(value=False)
-    checkbox = ct.CTkCheckBox(app, text='Imprimir fichas e informativos juntos?',variable=fichas)
-    #checkbox.pack(pady=20, padx=20)
     #Inicia loop(mantem a janela viva)
     app.mainloop()
-
 #abre a janela quando executar o codigo todo
 if __name__ == "__main__":
     janela_customtkinter()
